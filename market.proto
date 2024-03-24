@@ -1,0 +1,202 @@
+syntax = "proto3";
+
+//Seller side
+
+message RegisterSellerRequest {
+  string sellerAddress = 1;
+  string uuid = 2;
+}
+
+message RegisterSellerResponse {
+  string status = 1;
+}
+
+message SellItemRequest {
+  string itemName = 1;
+  string category = 2;
+  int32 quantity = 3;
+  string description = 4;
+  string sellerAddress = 5;
+  float price = 6;
+  string uuid = 7;
+}
+
+message SellItemResponse {
+  string status = 1;
+  int32 itemId = 2;
+}
+
+message UpdateItemRequest {
+  int32 itemId = 1;
+  float newPrice = 2;
+  int32 newQuantity = 3;
+  string sellerAddress = 4;
+  string uuid = 5;
+}
+
+message UpdateItemResponse {
+  string status = 1;
+}
+
+message DeleteItemRequest {
+  int32 itemId = 1;
+  string sellerAddress = 2;
+  string uuid = 3;
+}
+
+message DeleteItemResponse {
+  string status = 1;
+}
+
+message DisplaySellerItemsRequest {
+  string sellerAddress = 1;
+  string uuid = 2;
+}
+
+message DisplaySellerItemsResponse {
+
+  message ItemDetails{
+    int32 itemId = 1;
+    string itemName = 2;
+    string category = 3;
+    int32 quantity = 4;
+    string description = 5;
+    string sellerAddress = 6;
+    float price = 7;
+    string uuid = 8;
+    float rating = 9;
+    }
+
+  repeated ItemDetails sellerItems = 1;
+}
+
+//Buyer side
+
+message SearchItemRequest {
+  string itemName = 1;
+  string category = 2;
+}
+
+message SearchItemResponse {
+
+  message ItemDetails {
+    int32 itemId = 1;
+    float price = 2;
+    string itemName = 3;
+    string category = 4;
+    string description = 5;
+    int32 quantity = 6;
+    float rating = 7;
+    string sellerAddress = 8;
+  }
+
+  repeated ItemDetails searchResults = 1;
+}
+
+message BuyItemRequest {
+  int32 itemId = 1;
+  int32 quantity = 2;
+  string buyerAddress = 3;
+}
+
+message BuyItemResponse {
+  string status = 1;
+}
+
+message AddToWishListRequest {
+  int32 itemId = 1;
+  string buyerAddress = 2;
+}
+
+message AddToWishListResponse {
+  string status = 1;
+}
+
+message ShowWishListRequest {
+  string buyerAddress = 1;
+}
+
+message ShowWishListResponse {
+
+  message ItemDetails {
+    int32 itemId = 1;
+    float price = 2;
+    string itemName = 3;
+    string category = 4;
+    string description = 5;
+    int32 quantity = 6;
+    float rating = 7;
+    string sellerAddress = 8;
+  }
+
+  repeated ItemDetails wishList = 1;
+}
+
+message RateItemRequest {
+  int32 itemId = 1;
+  string buyerAddress = 2;
+  int32 rating = 3;
+}
+
+message RateItemResponse {
+  string status = 1;
+}
+
+
+message NotifyBuyerRequest {
+  message Item{
+    int32 itemId = 1;
+    string itemName = 2;
+    string category = 3;
+    int32 quantity = 4;
+    string description = 5;
+    string sellerAddress = 6;
+    float price = 7;
+    string uuid = 8;
+    float rating = 9;
+  }
+
+  Item item = 1;
+  string action = 2;
+}
+
+message NotifyBuyerResponse {
+  string status = 1;
+}
+
+message NotifySellerRequest {
+  message Item{
+    int32 itemId = 1;
+    string itemName = 2;
+    string category = 3;
+    int32 quantity = 4;
+    string description = 5;
+    string sellerAddress = 6;
+    float price = 7;
+    string uuid = 8;
+    float rating = 9;
+  }
+
+  Item item = 1;
+  string action = 2;
+  string buyerAddress = 3;
+}
+
+message NotifySellerResponse {
+  string status = 1;
+}
+
+service Market {
+  rpc RegisterSeller(RegisterSellerRequest) returns (RegisterSellerResponse);
+  rpc SellItem(SellItemRequest) returns (SellItemResponse);
+  rpc UpdateItem(UpdateItemRequest) returns (UpdateItemResponse);
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse);
+  rpc DisplaySellerItems(DisplaySellerItemsRequest) returns (DisplaySellerItemsResponse);
+  rpc SearchItem(SearchItemRequest) returns (SearchItemResponse);
+  rpc BuyItem(BuyItemRequest) returns (BuyItemResponse);
+  rpc AddToWishList(AddToWishListRequest) returns (AddToWishListResponse);
+  rpc ShowWishList(ShowWishListRequest) returns (ShowWishListResponse);
+  rpc RateItem(RateItemRequest) returns (RateItemResponse);
+  rpc NotifyBuyer(NotifyBuyerRequest) returns (NotifyBuyerResponse);
+  rpc NotifySeller(NotifySellerRequest) returns (NotifySellerResponse);
+}
